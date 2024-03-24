@@ -3,7 +3,7 @@
 
 ## gRPC + Protobuf
 Почему я решил работать с gRPC? Очень удобно, особо не думаешь о http запросах, как когда я делал проекты на RestApi, так как proto файлы делают все за тебя. 
-Навыки в этом получил на курсе Go ИТМО. 
+Навыки в этом получил на курсе Go ИТМО + гугл. 
 
 ## PostgreSQL
 Решил работать с PostgreSQL. Если опыт подключения на Docker. Решил тут не эксперементировать с новым, ведь Postrges находится в стеке вакансии)
@@ -12,7 +12,17 @@
 Тестировал программу этими технологиями. Postman в удобном приложении ловит мой localhost и позволяет отправлять множество запросов. Ну и докер позволяет поднять базу данных, чтобы не делать это вручную локально.
 
 ## Конкретно. Что за проект, как работает, как запускал
-#### ye
+#### gRPC
+В репозитории есть MakeFile. Он нужен чтобы установить proto и сгенерировать необходимые proto файлы, как раз, чтобы не задумываться о http, там это и происходит. Дальше билдим и получаем app ZIP файл. Поэтому заранее командой устанавливаю unzip.
+
+#### Postgres
+Постарался отразить свою работу в MakeFile. Но опишу конкретные шаги. 
+
+1) docker pull postgres - Качаем postgres
+2) docker run --name=flood-controll-task -e POSTGRES_PASSWORD=admin -p 5432:5432 -d --rm postgres - Запускаем контейнер с БД
+3) migrate create -ext sql -dir ./schema -seq init - Создали файлы, чтобы прописать миграцию. SQL Код для создания и удаления БД. (./schema)
+4) migrate -path ./schema -database 'postgres://postgres:admin@localhost:5432/postgres?sslmode=disable' up - Подняли наши таблицы
+5) migrate -path ./schema -database 'postgres://postgres:admin@localhost:5432/postgres?sslmode=disable' down - Убрали наши таблицы
 
 # ---------
 
